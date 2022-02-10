@@ -50,7 +50,7 @@ namespace NinjaDiscordSalesBot
                     EventType = "successful",
                 });
 
-                Console.WriteLine($"OpenSea heartbeat found {events!.Count} new events.");
+                Console.WriteLine($"OpenSea heartbeat for {_options.OpenSeaCollectionSlug} found {events!.Count} new events.");
 
                 _heartbeatRefTimestamp = now;
 

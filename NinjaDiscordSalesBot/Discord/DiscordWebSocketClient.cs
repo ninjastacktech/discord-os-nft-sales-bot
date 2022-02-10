@@ -45,7 +45,10 @@ namespace NinjaDiscordSalesBot
                                 Console.WriteLine("Discord Bot logged in successfully.");
                                 break;
                             case "MESSAGE_CREATE":
-                                Console.WriteLine("Discord Bot posted a new message.");
+                                var d = jo?.SelectToken("d");
+                                var embeds = d?.SelectToken("embeds")?.ToArray();
+                                var title = embeds != null && embeds.Count() > 0 ? embeds[0]?.SelectToken("title")?.ToObject<string?>() : string.Empty;
+                                Console.WriteLine($"Discord Bot posted a new message: {title}");
                                 break;
                         }
                         break;
