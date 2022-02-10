@@ -77,9 +77,9 @@ namespace NinjaDiscordSalesBot
         }
 
         private static DiscordMessage BuildDiscordMessage(Event ev) => new DiscordMessageBuilder()
-            .SetTitle($"{ev.Asset!.Name} sold for {ev.TotalPrice} ETH!")
+            .SetTitle($"{ev.Asset!.Name} sold for {ev.TotalPriceEth} ETH!")
             .SetDescription($"Collection: {ev.Asset!.Collection?.Name}")
-            .SetUrl($"https://opensea.io/assets/{ev.ContractAddress}/{ev.Asset?.TokenId}")
+            .SetUrl($"https://opensea.io/assets/{ev.Asset!.AssetContract?.Address}/{ev.Asset?.TokenId}")
             .SetImageUrl(ev.Asset!.ImagePreviewUrl)
             .SetTimestamp(ev.CreatedDate)
             .Build();
