@@ -77,12 +77,24 @@ namespace NinjaDiscordSalesBot
         }
 
         private static DiscordMessage BuildDiscordMessage(Event ev) => new DiscordMessageBuilder()
-            .SetTitle($"{ev.Asset!.Name} sold for {ev.TotalPriceEth} ETH!")
-            .SetDescription($"Collection: {ev.Asset!.Collection?.Name}")
+            .SetTitle(ev.Asset!.Name ?? "Unknown")
+            .SetDescription($"Collection: [{ev.Asset!.Collection?.Name}](https://opensea.io/collection/{ev.Asset!.Collection?.Slug})")
             .SetUrl($"https://opensea.io/assets/{ev.Asset!.AssetContract?.Address}/{ev.Asset?.TokenId}")
-            .SetImageUrl(ev.Asset!.ImagePreviewUrl)
-            .SetTimestamp(ev.CreatedDate)
+            .SetImageUrl(ev.Asset!.ImageUrl)
+            .SetTimestamp(DateTime.UtcNow)
+            .AddField("Sale Price", $"{ev.TotalPriceEth}Ξ", inline: true)
+            .AddField("Seller", $"[{TrimString(ev.Seller?.User?.Username) ?? TrimString(ev.Seller?.Address) ?? "Unknown"}](https://opensea.io/{ev.Seller?.Address})", inline: true)
+            .AddField("Buyer", $"[{TrimString(ev.WinnerAccount?.User?.Username) ?? TrimString(ev.WinnerAccount?.Address) ?? "Unknown"}](https://opensea.io/{ev.WinnerAccount?.Address})", inline: true)
             .Build();
+
+        private static string? TrimString(string? str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return null;
+            }
+            return new string(str.Take(10).ToArray());
+        }
 
     }
 }
