@@ -6,7 +6,7 @@ namespace NinjaDiscordSalesBot
     {
         private readonly NinjaBotOptions _options;
         private readonly DiscordHttpClient _discordHttpClient;
-        private readonly DiscordWebSocketClient _discordWebSocketClient;
+        private readonly DiscordWebSocketClient? _discordWebSocketClient;
         private readonly OpenSeaHttpClient _openSeaHttpClient;
         private Timer? _heartbeatTimer;
         private long _heartbeatRefTimestamp = new DateTimeOffset(DateTime.UtcNow.AddHours(-10)).ToUnixTimeSeconds();
@@ -14,14 +14,20 @@ namespace NinjaDiscordSalesBot
         public NinjaBot(NinjaBotOptions options)
         {
             _options = options;
-            _discordHttpClient = new DiscordHttpClient(botToken: _options.DiscordBotToken);
-            _discordWebSocketClient = new DiscordWebSocketClient(botToken: _options.DiscordBotToken);
+
             _openSeaHttpClient = new OpenSeaHttpClient(apiKey: _options.OpenSeaApiKey);
+
+            _discordHttpClient = new DiscordHttpClient(options: _options);
+
+            if (string.IsNullOrEmpty(_options.DiscordWebhookUrl))
+            {
+                _discordWebSocketClient = new DiscordWebSocketClient(botToken: _options.DiscordBotToken);
+            }
         }
 
         public async Task StartAsync()
         {
-            await _discordWebSocketClient.StartAsync();
+            await (_discordWebSocketClient?.StartAsync() ?? Task.CompletedTask);
 
             _heartbeatTimer = new Timer((objState) =>
             {
@@ -32,9 +38,12 @@ namespace NinjaDiscordSalesBot
 
         public async Task StopAsync()
         {
-            await _discordWebSocketClient.StopAsync();
+            await (_discordWebSocketClient?.StopAsync() ?? Task.CompletedTask);
 
-            _heartbeatTimer?.Dispose();
+            if (_heartbeatTimer != null)
+            {
+                await _heartbeatTimer.DisposeAsync();
+            }
         }
 
         private async Task Heartbeat()
