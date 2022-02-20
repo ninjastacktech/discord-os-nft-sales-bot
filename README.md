@@ -6,7 +6,7 @@ Built with 💙 and:
 - [NinjaWebSocket](https://github.com/ninjastacktech/ninja-websocket-net) - Lightweight, user-friendly WebSocket APIs
 - [OpenSeaHttpClient](https://github.com/ninjastacktech/opensea-net) - SDK for the OpenSea marketplace API
 
-Supports multiple marketplaces: https://github.com/ninjastacktech/discord-eth-nft-sales-bot (instead of polling OpenSea API, it subscribes to Ethereum websocket events)
+Support for multiple marketplaces: https://github.com/ninjastacktech/discord-eth-nft-sales-bot (instead of polling OpenSea API, it subscribes to Ethereum websocket events)
 
 ## Usage
 ```C#
