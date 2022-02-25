@@ -14,6 +14,7 @@ var bot = new NinjaBot(new NinjaBotOptions
 {
     DiscordBotToken = "<discord_bot_token>",
     DiscordChannelId = "<discord_channel_id>",
+    DiscordWebhookUrl = "<discord_webhook_url>",
     OpenSeaApiKey = "<opensea_api_key>",
     OpenSeaCollectionSlug = "<collection_slug>",
     PollingIntervalSeconds = 60000,
@@ -28,6 +29,7 @@ await bot.StartAsync();
 - `OpenSeaCollectionSlug [required]`. The name of the collection on OpenSea.
 - `DiscordBotToken [required]`. Create an application using the `Discord Developer Portal` and then create a bot within that application that has permissions to post messages. 
 - `DiscordChannelId [required]`. The id of the channel you want the bot to post into. Get this by turning on `Developer Mode` in Discord, then click the channel settings icon.
+- `DiscordWebhookUrl [required]`. Recommended option (automatically restricts the bot to only post to the specified channel). You can either set the webhook URL or the bot token & channel id.
 - `PollingIntervalSeconds [optional]`. How often should the bot query OpenSea API (default: 60 seconds).
 
 ---
